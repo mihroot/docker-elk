@@ -57,7 +57,13 @@ $ docker-compose up -d
 Now that the stack is running, you'll want to inject logs in it. The shipped logstash configuration allows you to send content via tcp:
 
 ```bash
-$ nc localhost 5000 < /path/to/logfile.log
+$ nc localhost 5000 < ./example_data.json
+```
+
+Or make a POST request
+
+```bash
+$ curl -XPOST "http://localhost:31311" -H "Content-Type: application/json" -d "{\"type\" : \"js-error\", \"@timestamp\" : \"2017-03-25T18:59:19.618Z\", \"app_id\" : 1, \"message\" : \"Cannot read property 'is_background' of null\", \"url\" : \"\", \"stack_trace\" : \"\", \"meta\" : {\"ip\" : \"71.84.65.173\", \"user_agent\" : \"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 YaBrowser/17.3.0.1785 Yowser/2.5 Safari/537.36\", \"os\" : \"Windows 10\", \"viewport\" : \"1821 x 785\", \"user_id\" : \"1\"}}"
 ```
 
 And then access Kibana UI by hitting [http://localhost:5601](http://localhost:5601) with a web browser.
@@ -68,6 +74,7 @@ Refer to [Connect Kibana with Elasticsearch](https://www.elastic.co/guide/en/kib
 
 By default, the stack exposes the following ports:
 * 5000: Logstash TCP input.
+* 31311: Logstash HTTP input.
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
